@@ -1,44 +1,41 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const logDiv = document.getElementById('log');
+import asyncio
+import websockets
+import json
+import random
+import string
 
-const socket = new WebSocket('ws://silasmc.duckdns.org:3434');
+connected_clients = {}
 
-function logMessage(message) {
-    const logEntry = document.createElement('div');
-    logEntry.textContent = message;
-    logDiv.appendChild(logEntry);
-    logDiv.scrollTop = logDiv.scrollHeight;
-}
+def generate_id():
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
-socket.onopen = () => {
-    logMessage('Verbindung zum Server hergestellt');
-    socket.send(JSON.stringify({ type: 'init', message: 'Hallo Server' }));
-};
+async def handle_client(websocket, path):
+    client_id = generate_id()
+    connected_clients[client_id] = websocket
+    try:
+        await websocket.send(json.dumps({'type': 'id', 'id': client_id}))
+        async for message in websocket:
+            data = json.loads(message)
+            print(f"Nachricht empfangen von {client_id}: {data}")
 
-socket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    logMessage('Nachricht vom Server: ' + JSON.stringify(data));
+            if data['type'] == 'move':
+                response = {
+                    'type': 'update',
+                    'x': data['x'],
+                    'y': data['y']
+                }
+                await asyncio.wait([client.send(json.dumps(response)) for client in connected_clients.values()])
+    except websockets.exceptions.ConnectionClosed as e:
+        print(f"Verbindung geschlossen für {client_id}: {e.code} - {e.reason}")
+    except Exception as e:
+        print(f"Fehler für {client_id}: {str(e)}")
+    finally:
+        del connected_clients[client_id]
 
-    if (data.type === 'update') {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'red';
-        ctx.fillRect(data.x, data.y, 50, 50);
-    }
-};
+async def main():
+    async with websockets.serve(handle_client, "0.0.0.0", 3434):
+        print("Server läuft auf Port 3434")
+        await asyncio.Future()  # Run forever
 
-socket.onclose = (event) => {
-    logMessage(`Verbindung zum Server geschlossen: ${event.code} - ${event.reason}`);
-};
-
-socket.onerror = (event) => {
-    logMessage(`WebSocket-Fehler: ${event.type}`);
-};
-
-canvas.addEventListener('mousemove', (event) => {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    socket.send(JSON.stringify({ type: 'move', x: x, y: y }));
-});
+if __name__ == "__main__":
+    asyncio.run(main())
