@@ -31,8 +31,8 @@ socket.onclose = (event) => {
     logMessage(`Verbindung zum Server geschlossen: ${event.code} - ${event.reason}`);
 };
 
-socket.onerror = (error) => {
-    logMessage(`WebSocket-Fehler: ${JSON.stringify(error)}`);
+socket.onerror = (event) => {
+    logMessage(`WebSocket-Fehler: ${JSON.stringify(event)}`);
 };
 
 canvas.addEventListener('mousemove', (event) => {
