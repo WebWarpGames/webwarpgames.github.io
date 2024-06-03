@@ -32,7 +32,7 @@ socket.onclose = (event) => {
 };
 
 socket.onerror = (event) => {
-    logMessage(`WebSocket-Fehler: ${JSON.stringify(event)}`);
+    logMessage(`WebSocket-Fehler: ${event.type}`);
 };
 
 canvas.addEventListener('mousemove', (event) => {
