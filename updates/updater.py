@@ -1,4 +1,5 @@
 #!/usr/local/bin/python
+# coding: utf-18
 import os
 
 def main():
