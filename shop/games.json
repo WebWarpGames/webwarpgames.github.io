@@ -5,9 +5,9 @@
         "url": "https://example.com/games/space_invaders.py"
     },
     {
-        "name": "Test",
-        "description": "Guide the snake to eat the apples and grow longer.",
-        "url": "https://example.com/games/snake.py"
+        "name": "Updater for firmver.1.0.1",
+        "description": "Update your System.",
+        "url": "https://webwarpgames.github.io/updates/update.py"
     },
     {
         "name": "Test",
