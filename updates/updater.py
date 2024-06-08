@@ -8,12 +8,12 @@ def main():
     updatedata_path = "~/console/sdisk/updatedata"
 
     try:
-        # Öffne die Datei sys.ver im Schreibmodus und schreibe "1.0.1" hinein
+        # Oeffne die Datei sys.ver im Schreibmodus und schreibe "1.0.1" hinein
         with open(sys_ver_path, "w") as sys_ver_file:
             sys_ver_file.write("1.0.1")
-        print("Text in sys.ver erfolgreich auf 1.0.1 geändert.")
+        print("Text in sys.ver erfolgreich auf 1.0.1 changed.")
 
-        # Lösche den Inhalt des Ordners updatedata
+        # Loesche den Inhalt des Ordners updatedata
         for filename in os.listdir(updatedata_path):
             file_path = os.path.join(updatedata_path, filename)
             try:
@@ -24,8 +24,8 @@ def main():
                     for sub_filename in os.listdir(file_path):
                         os.unlink(os.path.join(file_path, sub_filename))
             except Exception as e:
-                print(f"Fehler beim Löschen von {file_path}: {e}")
-        print("Inhalt von /updatedata erfolgreich gelöscht.")
+                print(f"Fehler beim Remove vorgang von {file_path}: {e}")
+        print("Inhalt von /updatedata erfolgreich deleted.")
 
     except Exception as e:
         print(f"Fehler: {e}")
