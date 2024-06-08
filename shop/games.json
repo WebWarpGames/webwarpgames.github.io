@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Test",
+        "description": "A classic arcade game where you defend against waves of aliens.",
+        "url": "https://example.com/games/space_invaders.py"
+    },
+    {
+        "name": "Test",
+        "description": "Guide the snake to eat the apples and grow longer.",
+        "url": "https://example.com/games/snake.py"
+    },
+    {
+        "name": "Test",
+        "description": "A popular puzzle game where you fit the falling blocks together.",
+        "url": "https://example.com/games/tetris.py"
+    },
+    {
+        "name": "Pong",
+        "description": "A two-player table tennis-themed arcade sports game.",
+        "url": "https://webwarpgames.github.io/games/pong.py"
+    }
+]
